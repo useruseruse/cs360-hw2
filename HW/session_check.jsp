@@ -1,5 +1,6 @@
 <%
-    String user_id = // your codes here;
-    if(user_id == null)
+    String user_id = session.getAttribute("user_id");
+    System
+    if(user_id == null )
         response.sendRedirect("/login.jsp");
 %>
