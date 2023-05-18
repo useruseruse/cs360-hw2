@@ -1,0 +1,43 @@
+1. make sure that when you access '/index.jsp', you are redirected to login if you are not logged in
+2. check if it is impossible to log in with a non-existent account in '/login.jsp'
+3. try to sign up with user 1 in '/register.jsp'
+4. try to register again with user 1 in '/register.jsp' (should not succeed)
+5. check that the user 1 password is not stored in plain text in the database password information
+6. tried to access '/index.jsp' page (redirected to '/login.jsp' page)
+7. try to login with the wrong password
+8. try to login with the correct user 1 information
+9. navigate to '/index.jsp'
+10. with user1 info, try to add a schedule to the schedule table
+11. verify that 10. the schedule is added to the schedule table as normal
+12. try to add a schedule with time overlapped schedule with user1 info
+13. verify that only 10. schedule exists in the schedule table
+14. try adding a schedule to the schedule table as user1
+15. verify that only 10. and 14. schedules exist in the schedule table
+16. try to delete a 10. schedule from the schedule table with user1 information
+17. verify that only 14. schedules exist in the schedule table
+18. check if step 10~17 are done with AJAX
+19. check if the schedule information is loading normally after refreshing the '/index.jsp' page
+20. log out and sign up with user 2 information
+21. login with user 2 information
+22. go to '/index.jsp' page
+23. with user2 info, try to add a schedule to the schedule table
+24. verify that 23. the schedule is added to the schedule table as normal
+25. try to add a schedule with time overlapped schedule with user2 info
+26. verify that only 23. schedule exists in the schedule table
+27. try adding a schedule to the schedule table as user2
+28. verify that only 23. and 27. schedules exist in the schedule table
+29. try to delete a 23. schedule from the schedule table with user1 information
+30. verify that only 27. schedules exist in the schedule table
+31. check if step 23~30 are done with AJAX
+32. check if the schedule information is loading normally after refreshing the '/index.jsp' page
+33. log out and sign up with user 3 information
+34. login with user 3 information
+35. go to '/index.jsp' page
+36. with user1 info, try to add a schedule to the schedule table
+37. verify that 36. the schedule is added to the schedule table as normal
+38. with user1 info, try to add a schedule to the schedule table
+39. verify that 38. the schedule is added to the schedule table as normal
+40. with user1 info, try to add a schedule to the schedule table
+41. verify that 40. the schedule is added to the schedule table as normal
+42~44. Search(Q5) test
+45. check if steps 36~44 are done with AJAX
