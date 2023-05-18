@@ -1,5 +1,4 @@
 <%@ include file="db_open.jsp" %>
-
 <% 
 Statement stmt = con.createStatement();
 

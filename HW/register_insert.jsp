@@ -14,7 +14,7 @@
             response.sendRedirect("/register.jsp");
         else
         {
-            String query = "INSERT INTO user VALUES(?, SHA1(?))";
+            query = "INSERT INTO user VALUES(?, SHA1(?))";
             
             pstmt = con.prepareStatement(query);
             pstmt.setString(1,user_id);
