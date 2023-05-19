@@ -1,3 +1,5 @@
+const { response } = require("express");
+
 <%@ include file="header.jsp" %>
 <%
     String user_id = request.getParameter("id");
@@ -12,14 +14,13 @@
         HttpSession userSession = request.getSession(false);        //기존 session이 있었으면, 그 session을 반환하고, 없었을 경우 null을 반환 
         
 
-        if(userSession.getAttribute("user_id") != null){                // 아직 세션이 만료되지  않은 경우, 바로 index 페이지로 다이렉팅.
-            System.out.println(userSession.getAttribute("user_id"));
-            response.sendRedirect("/session_check.jsp");
-        }
-        else if(rset.next()){                                           //기존 session이 없고, 로그인에 성공할 경우.
+        if(rset.next()){                                           //기존 session이 없고, 로그인에 성공할 경우.
             userSession.setAttribute("user_id", user_id);
-            System.out.println(userSession.getAttribute("user_id"));
-            response.sendRedirect("/session_check.jsp");
+            Cookie userCookie = new Cookie("user_id", user_id);
+            response.addCookie(userCookie);
+            System.out.println("userCookie" + userCookie.getValue() + userCookie.getName());
+
+            response.sendRedirect("/index.jsp");
         }
         else{
             response.sendRedirect("/login.jsp");
