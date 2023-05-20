@@ -11,15 +11,10 @@ const { response } = require("express");
         pstmt.setString(1, user_id); 
         pstmt.setString(2, userPassword);
         ResultSet rset = pstmt.executeQuery();
-        HttpSession userSession = request.getSession(false);        //기존 session이 있었으면, 그 session을 반환하고, 없었을 경우 null을 반환 
-        
+        HttpSession userSession = request.getSession();
 
-        if(rset.next()){                                           //기존 session이 없고, 로그인에 성공할 경우.
+        if(rset.next()){                                           
             userSession.setAttribute("user_id", user_id);
-            Cookie userCookie = new Cookie("user_id", user_id);
-            response.addCookie(userCookie);
-            System.out.println("userCookie" + userCookie.getValue() + userCookie.getName());
-
             response.sendRedirect("/index.jsp");
         }
         else{

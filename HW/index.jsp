@@ -1,6 +1,5 @@
 <%@ include file="header.jsp" %>
 <%@ include file="session_check.jsp" %>
-
 <a href="/logout.jsp"><%=user_id%> Logout</a>
 
 <h1> Schedule </h1>
