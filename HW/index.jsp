@@ -66,18 +66,44 @@
     }
 
     function del_func (event) {
-        // your codes here
+        //
     }
 
     function refresh_table() {
         // your codes here
+
     }
 
     // your codes here
-    
-    $('#submit_btn').click(
-        // your codes here
-    );
+    $('#submit_btn').click( function() {
+        const name = $('#name').val();
+        const start = $('#start').val();
+        const end = $('#end').val();
+        const dow = $('#dow').val();
+        
+        const data = {
+            'name': name,
+            'start': start,
+            'end': end,
+            'dow': dow
+        };
+
+        $.ajax({
+            type: 'POST',
+            url: "/sche_insert.jsp",
+            data: data,
+            success: function(res) {
+                //[implement] table 내용 저장. 
+                append_tr({
+                    code: res.code,
+                    name: name,
+                    start: start,
+                    end: end,
+                    dow: dow
+                });
+            }
+        })
+    });
 
 </script>
 <%@ include file="footer.jsp" %>
