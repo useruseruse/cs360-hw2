@@ -1,33 +1,51 @@
-const e = require("express");
+const { response } = require("express");
 
 <%@ include file="db_open.jsp" %>
 <%@ include file="session_check.jsp" %>
+<%! int code = 0; %>
 <%
-    var code = 0;
-    session = request.getSession();
-    System.out.println("inserting schedule session check"+session.isNew());
     String name = request.getParameter("name");
     String start = request.getParameter("start");
     String end = request.getParameter("end");
     String dow = request.getParameter("dow");
-    String user_id = session.getAtttribute("user_id");
 
     try{
-        String sql = "INSERT INTO schedule VALUES(?,?,?,?,?)";
+
+        //CHECK OVERLAPPING SCHEDULE
+        String checkSql = "SELECT * FROM schedule WHERE START <= ? AND  END >= ?";
+        PreparedStatement pstmt = con.prepareStatement(checkSql);
+        pstmt.setInt(1, end);
+        pstmt.setInt(2,start);
+        ResultSet checkSet = pstmt.executeQuery();
+        if(checkSet.next()){
+            response.getWriter.write("Error: overlapping time");
+            return; 
+        }
+
+        //INSERT SCHEDULE
+        String sql = "INSERT INTO schedule VALUES(NULL,?,?,?,?,?)";
         PreparedStatement pstmt = con.prepareStatement(sql);
         pstmt.setString(1, user_id);
         pstmt.setString(2, name);
         pstmt.setString(3, start);
         pstmt.setString(4, end);
         pstmt.setString(5, dow);
-        if(pstmt.executeUpdate()){          //if update db successes, return code 
-            code+=1;
-            protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-                response.setContentType("text/plain"); 
-                PrintWriter writer = response.getWriter(); 
-                writer.println(code);
-            }
+        int success = pstmt.executeUpdate();
+        if(success != 1){
+            response.getWriter.write("Error: error at inserting");
+            return; 
+        }   
+        
+        // IF SUCCESS, RETURN CODE 
+        String getCode = "SELECT code FROM schedule ORDER BY code DESC LIMIT 1";
+        Statement stmt = con.createStatement();
+        ResultSet rset = stmt.executeQuery(getCode);
+        if(rset.next()){
+            code = rset.getInt(1);
         }
+        response.getWriter().write(Integer.toString(code));  
+        
+    
     }catch(Exception e){
         e.printStackTrace();
     }

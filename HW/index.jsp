@@ -1,5 +1,8 @@
 <%@ include file="header.jsp" %>
 <%@ include file="session_check.jsp" %>
+<%@ page import="org.json.JSONObject" %>
+<%@ page import="org.json.JSONArray" %>
+
 <a href="/logout.jsp"><%=user_id%> Logout</a>
 
 <h1> Schedule </h1>
@@ -66,43 +69,88 @@
     }
 
     function del_func (event) {
-        //
+        var code = $(this).attr("code");
+        var $tr = $(this).closest('tr');
+
+        $.ajax({
+            type: 'POST',
+            url: "/sche_delete.jsp",
+            data:  {
+                code: code
+            },
+            success: function(){
+                delete_tr($tr);
+            }
+        })
+    }
+    
+    function fetch_search(query){
+        $.ajax({
+            type: 'POST',
+            url: "/sche_select.jsp",
+            data: {
+                query: query
+            },
+            success: function func (response){ 
+                for(const row in response){
+                    append_tr(response[row]);
+                }
+            }
+        });
     }
 
-    function refresh_table() {
-        // your codes here
-
+    function refresh_table() {   
+        console.log("Refreshing ");
+        fetch_search('');
     }
 
-    // your codes here
+
+    refresh_table();
+
     $('#submit_btn').click( function() {
+
         const name = $('#name').val();
         const start = $('#start').val();
         const end = $('#end').val();
         const dow = $('#dow').val();
-        
         const data = {
             'name': name,
             'start': start,
             'end': end,
             'dow': dow
         };
-
+    
         $.ajax({
             type: 'POST',
             url: "/sche_insert.jsp",
             data: data,
-            success: function(res) {
-                //[implement] table 내용 저장. 
-                append_tr({
-                    code: res.code,
+            success: function(response) {
+                const code = response;
+                if(code == 0){
+                    return;                  //DO NOT RETURN WHEN ERROR OCCURS
+                }
+                sche_row = {
+                    code: code,
                     name: name,
                     start: start,
                     end: end,
                     dow: dow
-                });
-            }
+                };
+                append_tr(sche_row);
+            },
+            
         })
+
+        $('#name').val("");
+        $('#start').val("");
+        $('#end').val("");
+        $('#dow').val("");
+    });
+
+    $('#search').change( function(){
+        const query = $(this).val();
+        clear_table();
+        fetch_search(query);
     });
 
 </script>
