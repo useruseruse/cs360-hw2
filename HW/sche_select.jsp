@@ -4,13 +4,13 @@
 <%@ include file="session_check.jsp" %>
 <%
     String search = request.getParameter("query") + "%";
-
     try{
         JSONArray jsonArray = new JSONArray();
 
-        String sql = "SELECT * FROM schedule WHERE name LIKE ?";
+        String sql = "SELECT * FROM schedule WHERE name LIKE ? AND user_id = ?";
         PreparedStatement pstmt = con.prepareStatement(sql);
-        pstmt.setString(1, search );
+        pstmt.setString(1, search);
+        pstmt.setString(2, user_id);
         ResultSet rset = pstmt.executeQuery();
         while(rset.next()){
             JSONObject jsonObject = new JSONObject();

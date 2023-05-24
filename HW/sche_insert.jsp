@@ -9,28 +9,20 @@
 
     try{
 
-        //CHECK NULL INPUT
-         if(name.isEmpty()|| start.isEmpty() ||end.isEmpty() ||dow.isEmpty()){             
-            System.out.println("Error: Null input exists");
-            response.getWriter().write("0");
-            return;
-        }
-
-        
-        //CHECK IMPOSSIBLE START AND END
-        if(Integer.parseInt(end) < Integer.parseInt(start)){            
-            System.out.println("plz check start is after end time");
-            return;
-        }
-
         //CHECK OVERLAPPING SCHEDULE
-        String checkSql = "SELECT * FROM schedule WHERE (START <= ? OR  END >= ?) AND dow = ?";
+        System.out.println("Inserting"+ user_id + ":    "+ start + "~" + end + dow);
+        String checkSql = "SELECT * FROM schedule WHERE dow =?  AND NOT( END <= ? OR START >= ?) AND user_id =?";
         PreparedStatement checkPstmt = con.prepareStatement(checkSql);
-        checkPstmt.setString(1, end);
+        checkPstmt.setString(1, dow);
         checkPstmt.setString(2, start);
-        checkPstmt.setString(3, dow);
+        checkPstmt.setString(3, end);
+        checkPstmt.setString(4, user_id);
+    
+
         ResultSet checkSet = checkPstmt.executeQuery();
         if(checkSet.next()){
+            System.out.println("failed because of" + checkSet.getString(1)+ checkSet.getString(2)+ ":   " +checkSet.getString(4) + checkSet.getString(5) + checkSet.getString(6) );
+        
             System.out.println("Error: overlapping time");
             response.getWriter().write("0");
             return; 

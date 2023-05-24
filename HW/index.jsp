@@ -89,7 +89,7 @@
             type: 'POST',
             url: "/sche_select.jsp",
             data: {
-                query: query
+                query: query,
             },
             success: function func (response){ 
                 for(const row in response){
@@ -126,9 +126,7 @@
             data: data,
             success: function(response) {
                 const code = response;
-                if(code == 0){
-                    return;                  //DO NOT RETURN WHEN ERROR OCCURS
-                }
+                if(code > 0){
                 sche_row = {
                     code: code,
                     name: name,
@@ -137,6 +135,7 @@
                     dow: dow
                 };
                 append_tr(sche_row);
+                }
             },
             
         })
